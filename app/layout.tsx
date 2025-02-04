@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <header>
-          <Navbar className="pt-2 pb-1 border-b-2 shadow-sm w-full">
+          <Navbar className="fixed top-0 left-0 right-0 z-50 text-white pt-2 pb-1 shadow-lg w-full">
             <NavbarContent className="w-full !justify-evenly items-center">
               <NavbarItem isActive={pathname === "/"} className="">
                 <Link href="/" className={`text-2xl self-center ${pathname === "/" ? "underline" : ""}`}>Home</Link>
