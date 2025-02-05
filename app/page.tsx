@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { MdEdit } from "react-icons/md";
 import { useState, useEffect } from 'react';
 
@@ -10,7 +11,7 @@ export default function Profile() {
   useEffect(() => {
     const savedImage = localStorage.getItem('profileImage');
     const savedName = localStorage.getItem('profileName');
-    
+
     if (savedImage) {
       setImage(savedImage);
     }
@@ -23,8 +24,13 @@ export default function Profile() {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const objectUrl = URL.createObjectURL(file);
-      setImage(objectUrl);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        setImage(base64String);
+        localStorage.setItem('profileImage', base64String);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -35,16 +41,19 @@ export default function Profile() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-cover bg-center" style={{ backgroundImage: 'url(/portfolio_profile_bg.gif)' }}> 
+    <div className="flex flex-col items-center justify-center h-screen bg-cover bg-center" style={{ backgroundImage: 'url(/portfolio_profile_bg.gif)' }}>
       <div className="relative w-72 h-72">
-        <div className="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg">
-          <img src={image ?? '/default-profile.png'} alt="Profile Picture" className="w-full h-full object-cover" />
-        </div>
+        <Link href="/myportfolio">
+          <div className="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg">
+            <img src={image ?? '/default-profile.png'} alt="Profile Picture" className="w-full h-full object-cover" />
+          </div>
+        </Link>
         <label className="absolute bottom-2 right-2 border-2 border-white bg-[#bdada5] p-2 rounded-full shadow cursor-pointer">
-        <MdEdit className="text-white w-8 h-8" />
+          <MdEdit className="text-white w-8 h-8" />
           <input type="file" accept="image/png, image/jpeg" className="hidden" onChange={handleImageChange} />
         </label>
       </div>
+
       <input
         type="text"
         value={name}
