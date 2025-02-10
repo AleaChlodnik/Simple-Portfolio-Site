@@ -24,8 +24,8 @@ export default function RootLayout({
               <NavbarItem isActive={pathname === "/myportfolio"}>
                 <Link href="/myportfolio" className={`text-2xl self-center ${pathname === "/myportfolio" ? "underline" : ""}`}>Portfolio</Link>
               </NavbarItem>
-              <NavbarItem isActive={pathname === "/aboutme"}>
-                <Link href="/aboutme" className={`text-2xl self-center ${pathname === "/aboutme" ? "underline" : ""}`}>About me</Link>
+              <NavbarItem isActive={pathname === "/docs"}>
+                <Link href="/docs" className={`text-2xl self-center ${pathname === "/docs" ? "underline" : ""}`}>Docs</Link>
               </NavbarItem>
             </NavbarContent>
           </Navbar>

@@ -9,7 +9,7 @@ export default function Portfolio() {
   const [repos, setRepos] = useState<any[]>([]);
   const [languages, setLanguages] = useState<Set<string>>(new Set());
   const [error, setError] = useState<string | null>(null);
-  const colors = ["#d86d65", "#295db9", "#977dbe", "#e8c591", "#9966ff", "#ff9f40"];
+  const colors = ["#d86d65", "#977dbe", "#295db9", "#e8c591", "#9966ff", "#ff9f40"];
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [maxNameLength, setMaxNameLength] = useState(0);
 
@@ -164,6 +164,11 @@ export default function Portfolio() {
     }
   }, [repos]);
 
+  const getLanguageDocsUrl = (lang: string): string => {
+    return `https://www.google.com/search?q=${lang}+documentation`;
+  };
+  
+
   return (
     <div className="w-full min-h-screen bg-cover pt-[5%] px-[2%]" style={{ backgroundImage: 'url(/portfolio_bg.jpg)' }}>
       <div className="flex flex-row gap-[2%]">
@@ -210,9 +215,12 @@ export default function Portfolio() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-5 py-8 w-full bg-white bg-opacity-80 rounded-3xl">
-          <h1 className="text-7xl font-extrabold w-full text-center text-white" style={{ textShadow: "2px 2px 0px rgb(183,138,106), -2px -2px 0px rgb(183,138,106), 2px -2px 0px rgb(183,138,106), -2px 2px 0px rgb(183,138,106)" }}>My Portfolio</h1>
-          <div className="flex flex-row items-end w-full px-10">
+        <div className="flex flex-col gap-14 py-10 w-full bg-white bg-opacity-80 rounded-3xl">
+          <h1 className="text-7xl font-extrabold w-full text-center text-white"
+            style={{ textShadow: "2px 2px 0px rgb(183,138,106), -2px -2px 0px rgb(183,138,106), 2px -2px 0px rgb(183,138,106), -2px 2px 0px rgb(183,138,106)" }}>
+            My Portfolio
+          </h1>
+          <div className="flex flex-row items-start w-full px-10">
             <div className="w-fit">
               {error ? (
                 <p className="text-red-500">{error}</p>
@@ -237,11 +245,11 @@ export default function Portfolio() {
                   <Tooltip />
                 </PieChart>
               )}
-              <h2 className="text-2xl font-semibold text-center text-[#b78a6a]">Contributions per Year</h2>
+              <h2 className="text-2xl font-semibold text-center">Contributions per Year</h2>
             </div>
 
-            <div className="flex flex-col items-end gap-5 w-full h-full pr-5">
-              <h2 className="text-4xl font-bold text-[#b78a6a] pr-8"><u>Projects</u></h2>
+            <div className="flex flex-col items-end gap-5 w-full max-h-[45vh] overflow-y-scroll pr-5">
+              {/* <h2 className="text-4xl font-bold text-[#b78a6a] pr-8">Projects</h2> */}
               {error ? (
                 <p className="text-red-500">{error}</p>
               ) : repos.length === 0 ? (
@@ -249,7 +257,7 @@ export default function Portfolio() {
               ) : (
                 <div className="flex flex-wrap justify-end gap-12">
                   {repos.map((repo) => {
-                    const width = `${maxNameLength * 1.4}vw`;
+                    const width = `${maxNameLength * 1.2}vw`;
                     return (
                       <Link key={repo.id} href={repo.html_url}>
                         <div className="rounded-full shadow-2xl text-5xl text-white text-center font-semibold bg-[#b78a6a] h-fit hover:scale-105 transition-transform py-5" style={{ width }}>
@@ -264,26 +272,28 @@ export default function Portfolio() {
 
           </div>
 
-          <div className="flex flex-col justify-center items-center w-full">
-            <h2 className="text-2xl font-semibold">Technology Used</h2>
-            <p>{[...languages].length ? [...languages].join(", ") : "Loading..."}</p>
+          <div className="flex flex-col justify-center items-center w-full pt-5">
+            <h2 className="text-5xl font-semibold text-[#b78a6a]">Technology Used</h2>
+            <div className="h-1 w-3/4 bg-gradient-to-r from-transparent via-[#b78a6a] to-transparent my-6 mx-auto"></div>
+            <p className="text-xl flex flex-wrap justify-center items-center gap-5 w-[80%]">
+              {[...languages].length ? (
+                [...languages].map((lang, index) => (
+                  <Link
+                    key={index}
+                    href={getLanguageDocsUrl(lang)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="border-2 border-[#b78a6a] rounded-full px-4 py-1 hover:bg-[#b78a6a] hover:text-white transition"
+                  >
+                    {lang}
+                  </Link>
+                ))
+              ) : (
+                "Loading..."
+              )}
+            </p>
           </div>
         </div>
-      </div>
-
-      <div className="w-fit">
-        <iframe
-          src="/AleaChlodnik-CV-fr.pdf"
-          className="w-full border rounded-lg shadow-lg"
-        ></iframe>
-
-        <a
-          href="/AleaChlodnik-CV-fr.pdf"
-          download="AleaChlodnik-CV-fr.pdf"
-          className="bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition"
-        >
-          📥 Download Resume
-        </a>
       </div>
     </div>
   );
